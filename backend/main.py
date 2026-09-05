@@ -3,7 +3,27 @@ from fastapi import FastAPI
 app = FastAPI()
 
 data = {
-    "scenes": 24,
+    "scenes": [
+        {
+            "number": 17,
+            "name": "Opening Scene",
+            "equipment": ["Camera 01"],
+            "status": "complete"
+        },
+        {
+            "number": 18,
+            "name": "Night Chase",
+            "equipment": ["Camera 03"],
+            "status": "delayed"
+        },
+        {
+            "number": 19,
+            "name": "Final Shot",
+            "equipment": ["Camera 02"],
+            "status": "waiting"
+        }
+    ],
+
     "crew_present": 38,
     "crew_total": 40,
     "equipment": [
@@ -17,6 +37,10 @@ data = {
 def check_incident():
     for item in data["equipment"]:
         if item["status"] == "offline":
+            for scene in data["scenes"]:
+                if item["name"] in scene["equipment"]:
+                    return item["name"] + " Failure - Scene " + str(scene["number"])
+
             return item["name"] + " Failure"
 
     return "No active incidents"

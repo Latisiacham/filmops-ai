@@ -2,7 +2,7 @@ async function loadData() {
     const response = await fetch("http://127.0.0.1:8000/production");
     const data = await response.json();
 
-    document.getElementById("scenes").textContent = data.scenes;
+    document.getElementById("scenes").textContent = data.scenes.length;
 
     document.getElementById("crew").textContent =
         data.crew_present + "/" + data.crew_total;
@@ -16,8 +16,17 @@ async function loadData() {
     document.getElementById("incident").textContent =
         "⚠ " + data.incident;
 
-    document.getElementById("incident-text").textContent =
+    const scene = data.scenes.find(function(item) {
+    return data.incident.includes("Scene " + item.number);
+    });
+
+    if (scene) {
+        document.getElementById("incident-text").textContent =
+        scene.name + " is affected by this equipment failure.";
+    } else {
+        document.getElementById("incident-text").textContent =
         "Production equipment requires attention.";
+    }
 }
 
 loadData();
