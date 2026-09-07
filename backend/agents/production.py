@@ -1,7 +1,7 @@
-from backend.ai import get_recommendation
+from backend.adk_ai import get_adk_recommendation
 
 
-def make_decision(equipment_result, schedule_result):
+async def make_decision(equipment_result, schedule_result):
     incident = ""
 
     if equipment_result["offline"]:
@@ -18,7 +18,14 @@ def make_decision(equipment_result, schedule_result):
             + schedule_result["affected_scene"]
         )
 
-    return get_recommendation(
-        incident,
-        schedule_result["delay"]
-    )
+    try:
+        return await get_adk_recommendation(
+            incident,
+            schedule_result["delay"]
+        )
+
+    except Exception:
+        return (
+            "AI recommendation is temporarily unavailable. "
+            "Continue the production recovery plan while the AI service reconnects."
+        )

@@ -92,7 +92,7 @@ async def production():
         data["delay"]
     )
 
-    data["recommendation"] = make_decision(
+    data["recommendation"] = await make_decision(
         equipment_result,
         schedule_result
     )
