@@ -1,6 +1,9 @@
 from fastapi import FastAPI
 from backend.ai import get_recommendation
 
+from backend.agents.equipment import check_equipment
+from backend.agents.schedule import check_schedule
+from backend.agents.production import make_decision
 
 app = FastAPI()
 
@@ -65,9 +68,17 @@ def production():
     data["equipment_total"] = len(data["equipment"])
     data["incident"] = check_incident()
 
-    data["recommendation"] = get_recommendation(
-    data["incident"],
-    data["delay"]
-)
+    equipment_result = check_equipment(data["equipment"])
+
+    schedule_result = check_schedule(
+        data["scenes"],
+        data["incident"],
+        data["delay"]
+    )
+
+    data["recommendation"] = make_decision(
+        equipment_result,
+        schedule_result
+    )
 
     return data
