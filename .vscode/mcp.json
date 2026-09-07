@@ -1,0 +1,11 @@
+{
+    "servers": {
+        "grafana": {
+            "type": "http",
+            "url": "https://mcp.grafana.com/mcp",
+            "headers": {
+                "X-Grafana-URL": "https://hugechicken299.grafana.net"
+            }
+        }
+    }
+}

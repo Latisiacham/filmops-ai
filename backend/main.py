@@ -1,11 +1,25 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from backend.ai import get_recommendation
+from backend.grafana import get_delay
 
 from backend.agents.equipment import check_equipment
 from backend.agents.schedule import check_schedule
 from backend.agents.production import make_decision
 
+
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://127.0.0.1:5500",
+        "http://localhost:5500"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 data = {
     "scenes": [
@@ -57,7 +71,7 @@ def home():
 
 
 @app.get("/production")
-def production():
+async def production():
     working = 0
 
     for item in data["equipment"]:
@@ -67,6 +81,8 @@ def production():
     data["equipment_working"] = working
     data["equipment_total"] = len(data["equipment"])
     data["incident"] = check_incident()
+
+    data["delay"] = await get_delay()
 
     equipment_result = check_equipment(data["equipment"])
 
