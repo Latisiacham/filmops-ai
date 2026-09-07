@@ -16,6 +16,9 @@ async function loadData() {
     document.getElementById("incident").textContent =
         "⚠ " + data.incident;
 
+    document.getElementById("recommendation").textContent =
+        data.recommendation;
+
     const scene = data.scenes.find(function(item) {
     return data.incident.includes("Scene " + item.number);
     });

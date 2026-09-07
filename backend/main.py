@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+from backend.ai import get_recommendation
+
 
 app = FastAPI()
 
@@ -62,5 +64,10 @@ def production():
     data["equipment_working"] = working
     data["equipment_total"] = len(data["equipment"])
     data["incident"] = check_incident()
+
+    data["recommendation"] = get_recommendation(
+    data["incident"],
+    data["delay"]
+)
 
     return data
