@@ -1,5 +1,5 @@
 async function loadData() {
-    const response = await fetch("http://127.0.0.1:8000/production");
+    const response = await fetch("/production");
     const data = await response.json();
 
     document.getElementById("scenes").textContent = data.scenes.length;
@@ -35,10 +35,9 @@ async function loadData() {
 loadData();
 
 document.getElementById("approve-button").addEventListener("click", async function() {
-    const response = await fetch("http://127.0.0.1:8000/approve", {
+    const response = await fetch("/approve", {
         method: "POST"
     });
-
     const data = await response.json();
 
     document.getElementById("approval-status").textContent =

@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from backend.ai import get_recommendation
 from backend.grafana import get_delay
@@ -67,10 +68,6 @@ def check_incident():
     return "No active incidents"
 
 
-@app.get("/")
-def home():
-    return {"message": "FilmOps AI is running"}
-
 
 @app.get("/production")
 async def production():
@@ -114,3 +111,9 @@ async def approve():
         "message": "Recovery plan approved",
         "status": data["approval_status"]
     }
+
+app.mount(
+    "/",
+    StaticFiles(directory="frontend", html=True),
+    name="frontend"
+)
