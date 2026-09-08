@@ -6,6 +6,7 @@ from backend.grafana import get_delay
 from backend.agents.equipment import check_equipment
 from backend.agents.schedule import check_schedule
 from backend.agents.production import make_decision
+from backend.metrics import send_metric
 
 
 app = FastAPI()
@@ -50,7 +51,8 @@ data = {
         {"name": "Camera 02", "status": "online"},
         {"name": "Camera 03", "status": "offline"}
     ],
-    "delay": 45
+    "delay": 45,
+    "approval_status": "pending",
 }
 
 def check_incident():
@@ -98,3 +100,17 @@ async def production():
     )
 
     return data
+
+@app.post("/approve")
+async def approve():
+    data["approval_status"] = "approved"
+
+    send_metric(
+        "filmops_recommendation_approved",
+        1
+    )
+
+    return {
+        "message": "Recovery plan approved",
+        "status": data["approval_status"]
+    }

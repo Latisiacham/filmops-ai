@@ -15,6 +15,12 @@
     <p>The AI Production Control Room</p>
 </header>
 
+<div class="system-status">
+    <span>● Grafana Connected</span>
+    <span>● Grafana MCP Active</span>
+    <span>● Google ADK Agent Active</span>
+</div>
+
 <div class="container">
 
     <div class="cards">
@@ -63,7 +69,9 @@
 
         <p id="recommendation">Generating recommendation...</p>
 
-        <button>Approve Recommendation</button>
+        <button id="approve-button">Approve Recommendation</button>
+
+            <p id="approval-status"></p>
     </div>
 
 </div>

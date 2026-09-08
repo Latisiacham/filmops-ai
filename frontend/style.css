@@ -82,3 +82,17 @@ body {
         button:hover {
             background: #1d4ed8;
         }
+
+        .system-status {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 12px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .system-status span {
+            padding: 6px 12px;
+            border-radius: 6px;
+        }

@@ -33,3 +33,16 @@ async function loadData() {
 }
 
 loadData();
+
+document.getElementById("approve-button").addEventListener("click", async function() {
+    const response = await fetch("http://127.0.0.1:8000/approve", {
+        method: "POST"
+    });
+
+    const data = await response.json();
+
+    document.getElementById("approval-status").textContent =
+        "✓ " + data.message;
+
+    document.getElementById("approve-button").disabled = true;
+});
