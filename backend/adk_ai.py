@@ -30,8 +30,8 @@ async def get_adk_recommendation(incident, delay):
         ]
     )
 
-    # Try Gemini up to 3 times if the service is temporarily busy
-    for attempt in range(3):
+    # Try Gemini up to 4 times if the service is temporarily busy
+    for attempt in range(4):
         try:
             session_service = InMemorySessionService()
 
@@ -78,7 +78,7 @@ async def get_adk_recommendation(incident, delay):
             )
 
             if attempt < 2:
-                await asyncio.sleep(3)
+                await asyncio.sleep(5)
 
     return (
         "AI recommendation is temporarily unavailable. "
