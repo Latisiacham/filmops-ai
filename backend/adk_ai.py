@@ -30,55 +30,28 @@ async def get_adk_recommendation(incident, delay):
         ]
     )
 
-    # Try Gemini up to 4 times if the service is temporarily busy
     for attempt in range(4):
-        try:
-            session_service = InMemorySessionService()
+    try:
+        # your Gemini / ADK request here
 
-            await session_service.create_session(
-                app_name="filmops",
-                user_id="filmops-user",
-                session_id=f"filmops-session-{attempt}"
-            )
+        if answer:
+            cache[key] = answer
+            return answer
 
-            runner = Runner(
-                agent=root_agent,
-                app_name="filmops",
-                session_service=session_service
-            )
+    except Exception as error:
+        print(
+            f"Gemini attempt {attempt + 1} failed:",
+            error
+        )
 
-            answer = ""
+        if attempt < 3:
+            wait_time = 5 * (attempt + 1)
 
-            async for event in runner.run_async(
-                user_id="filmops-user",
-                session_id=f"filmops-session-{attempt}",
-                new_message=message
-            ):
-                if event.content and event.content.parts:
-                    for part in event.content.parts:
-                        if part.text:
-                            answer = part.text
-
-            if answer:
-                for _ in range(5):
-                    cleaned = html.unescape(answer)
-
-                    if cleaned == answer:
-                        break
-
-                    answer = cleaned
-
-                cache[key] = answer
-                return answer
-
-        except Exception as error:
             print(
-                f"Gemini attempt {attempt + 1} failed:",
-                error
+                f"Retrying Gemini in {wait_time} seconds..."
             )
 
-            if attempt < 2:
-                await asyncio.sleep(5)
+            await asyncio.sleep(wait_time)
 
     return (
         "AI recommendation is temporarily unavailable. "
