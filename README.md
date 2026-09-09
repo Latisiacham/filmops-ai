@@ -149,31 +149,9 @@ Human Approval
 
 ## 🏗️ Architecture
 
-```text
-                    FILMOPS AI
-                        │
-                        ▼
-                Web Dashboard
-                        │
-                        ▼
-                 FastAPI Backend
-                  │           │
-                  │           │
-                  ▼           ▼
-          Production Agents   Grafana MCP
-                  │                │
-                  ▼                ▼
-             Google ADK       Grafana Cloud
-                  │          Prometheus / OTLP
-                  ▼                ▲
-               Gemini              │
-                  │                │
-                  ▼                │
-          AI Recommendation        │
-                  │                │
-                  ▼                │
-           Human Approval ─────────┘
-```
+FilmOps connects production signals, agentic AI, human decision-making, and observability in a closed operational loop.
+
+![FilmOps AI Architecture](images/filmops-architecture.png)
 
 ---
 
